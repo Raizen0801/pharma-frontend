@@ -1,0 +1,41 @@
+<div class="productos-page">
+  <h1>Catálogo de Productos</h1>
+  <p class="subtitulo">Inventario disponible y control de existencias en tiempo real.</p>
+
+  <div class="tabla-card">
+    <table class="tabla" id="tabla-productos">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nombre del Producto</th>
+          <th>Categoría</th>
+          <th>Precio (S/.)</th>
+          <th>Stock Actual</th>
+          <th>Estado</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (p of productos(); track p.id) {
+          <tr [id]="'fila-producto-' + p.id">
+            <td>#{{ p.id }}</td>
+            <td><strong>{{ p.nombre }}</strong></td>
+            <td>{{ p.categoria }}</td>
+            <td>S/. {{ p.precio | number:'1.2-2' }}</td>
+            <td [id]="'stock-producto-' + p.id">
+              <span class="stock-badge" [class.sin-stock]="p.stock === 0">
+                {{ p.stock }} unidades
+              </span>
+            </td>
+            <td>
+              @if (p.stock > 0) {
+                <span class="estado disponible">Disponible</span>
+              } @else {
+                <span class="estado agotado">Agotado</span>
+              }
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>
