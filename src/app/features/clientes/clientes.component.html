@@ -1,0 +1,62 @@
+<div class="clientes-page">
+  <h1>Gestión de Clientes</h1>
+  <p class="subtitulo">Registro y consulta rápida de clientes para emisión de comprobantes.</p>
+
+  @if (mensajeExito()) {
+    <div class="alerta-exito" id="alerta-cliente-exitoso" role="alert">
+      ✓ {{ mensajeExito() }}
+      <a routerLink="/ventas" class="link-ir-venta" id="btn-ir-a-venta">Ir a Venta Inmediata →</a>
+    </div>
+  }
+
+  <div class="grid-layout">
+    <!-- Formulario -->
+    <div class="card form-card">
+      <h2>Nuevo Cliente</h2>
+      <form (ngSubmit)="registrarCliente()">
+        <div class="campo">
+          <label for="cliente-dni">Número de DNI</label>
+          <input type="text" id="cliente-dni" name="dni" [(ngModel)]="dni" required maxlength="8" placeholder="8 dígitos" />
+        </div>
+        <div class="campo">
+          <label for="cliente-nombre">Nombres y Apellidos</label>
+          <input type="text" id="cliente-nombre" name="nombre" [(ngModel)]="nombre" required placeholder="Nombre completo" />
+        </div>
+        <div class="campo">
+          <label for="cliente-telefono">Teléfono</label>
+          <input type="tel" id="cliente-telefono" name="telefono" [(ngModel)]="telefono" placeholder="999888777" />
+        </div>
+        <button type="submit" class="btn-guardar" id="btn-guardar-cliente" [disabled]="!dni || !nombre">
+          Guardar Cliente
+        </button>
+      </form>
+    </div>
+
+    <!-- Lista -->
+    <div class="card list-card">
+      <h2>Clientes Registrados</h2>
+      <table class="tabla" id="tabla-clientes">
+        <thead>
+          <tr>
+            <th>Documento</th>
+            <th>Nombre Completo</th>
+            <th>Teléfono</th>
+            <th>Acción</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (c of clientes(); track c.id) {
+            <tr>
+              <td><strong>{{ c.tipoDocumento }}: {{ c.numeroDocumento }}</strong></td>
+              <td>{{ c.nombreCompleto }}</td>
+              <td>{{ c.telefono }}</td>
+              <td>
+                <button type="button" class="btn-vender" (click)="irAVentaConCliente(c)">Vender</button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

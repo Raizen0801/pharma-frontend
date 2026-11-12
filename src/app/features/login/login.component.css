@@ -1,0 +1,113 @@
+.login-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 80vh;
+  padding: 20px;
+}
+.login-card {
+  width: 100%;
+  max-width: 420px;
+  background: #ffffff;
+  padding: 32px;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e2e8f0;
+}
+.login-logo {
+  font-size: 24px;
+  font-weight: 700;
+  color: #0f2e5c;
+  text-align: center;
+  margin-bottom: 8px;
+}
+h2 {
+  font-size: 20px;
+  color: #1e293b;
+  text-align: center;
+  margin: 0 0 20px;
+}
+.alerta-expirada {
+  background: #fffbeb;
+  border: 1px solid #fde68a;
+  color: #92400e;
+  padding: 12px;
+  border-radius: 6px;
+  font-size: 13px;
+  margin-bottom: 16px;
+  line-height: 1.4;
+}
+.alerta-error {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #991b1b;
+  padding: 10px;
+  border-radius: 6px;
+  font-size: 13px;
+  margin-bottom: 16px;
+}
+.campo {
+  margin-bottom: 16px;
+}
+.campo label {
+  display: block;
+  font-size: 13px;
+  font-weight: 500;
+  color: #475569;
+  margin-bottom: 6px;
+}
+.campo input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+.campo input:focus {
+  outline: none;
+  border-color: #0f2e5c;
+}
+.btn-submit {
+  width: 100%;
+  padding: 11px;
+  background: #0f2e5c;
+  color: #fff;
+  border: 0;
+  border-radius: 6px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.btn-submit:hover {
+  background: #183e78;
+}
+.accesos-rapidos {
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid #e2e8f0;
+  text-align: center;
+}
+.accesos-rapidos p {
+  font-size: 13px;
+  color: #64748b;
+  margin: 0 0 10px;
+}
+.botones-roles {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.btn-rol {
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid #cbd5e1;
+  background: #f8fafc;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  text-align: left;
+}
+.btn-rol:hover {
+  background: #e2e8f0;
+}

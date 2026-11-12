@@ -1,0 +1,160 @@
+<div class="ventas-page">
+  <h1>Punto de Venta y Facturación</h1>
+  <p class="subtitulo">Registro de ventas, emisión de comprobantes electrónicos y control de stock.</p>
+
+  <!-- Mensajes de Error y Alertas E2E -->
+  @if (error409()) {
+    <div class="alerta alerta-409" id="alerta-error-409" role="alert">
+      ⛔ {{ error409() }}
+    </div>
+  }
+
+  @if (error400()) {
+    <div class="alerta alerta-400" id="alerta-error-400" role="alert">
+      ⚠️ {{ error400() }}
+    </div>
+  }
+
+  @if (comprobanteGenerado(); as comp) {
+    <div class="comprobante-card" id="comprobante-venta">
+      <div class="comprobante-header">
+        <span class="badge-exito">✓ Venta Exitosa</span>
+        <span class="comp-numero">{{ comp.numeroComprobante }}</span>
+      </div>
+      <p><strong>Cliente:</strong> <span id="comp-cliente">{{ comp.cliente }}</span></p>
+      <p><strong>Total Pagado:</strong> <span id="comp-total">S/. {{ comp.total | number:'1.2-2' }}</span></p>
+      <p><strong>Atendido por:</strong> {{ comp.usuario }}</p>
+    </div>
+  }
+
+  <div class="grid-venta">
+    <!-- Panel Nueva Venta -->
+    <div class="card panel-registro">
+      <h2>Registrar Nueva Venta</h2>
+      <div class="campo">
+        <label for="venta-cliente">Cliente</label>
+        <input type="text" id="venta-cliente" name="cliente" [(ngModel)]="cliente" placeholder="Nombre del cliente" />
+      </div>
+
+      <div class="agregar-linea">
+        <div class="campo flex-2">
+          <label for="venta-producto">Producto</label>
+          <select id="venta-producto" [(ngModel)]="productoSeleccionadoId">
+            @for (p of productosCatalogo; track p.id) {
+              <option [value]="p.id">
+                {{ p.nombre }} - S/. {{ p.precio | number:'1.2-2' }} (Stock: {{ p.stock }})
+              </option>
+            }
+          </select>
+        </div>
+
+        <div class="campo flex-1">
+          <label for="venta-cantidad">Cantidad</label>
+          <input type="number" id="venta-cantidad" [(ngModel)]="cantidad" min="1" />
+        </div>
+
+        <button type="button" class="btn-agregar" id="btn-agregar-producto" (click)="agregarProducto()">
+          + Añadir
+        </button>
+      </div>
+
+      <!-- Detalle Carrito -->
+      <table class="tabla-carrito" id="tabla-carrito">
+        <thead>
+          <tr>
+            <th>Producto</th>
+            <th>Precio</th>
+            <th>Cant.</th>
+            <th>Subtotal</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (it of items(); track $index) {
+            <tr>
+              <td>{{ it.nombre }}</td>
+              <td>S/. {{ it.precio | number:'1.2-2' }}</td>
+              <td>{{ it.cantidad }}</td>
+              <td>S/. {{ it.subtotal | number:'1.2-2' }}</td>
+              <td><button type="button" class="btn-del" (click)="eliminarItem($index)">✕</button></td>
+            </tr>
+          }
+          @if (items().length === 0) {
+            <tr>
+              <td colspan="5" class="carrito-vacio">No hay productos añadidos a la venta.</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+
+      <div class="resumen-venta">
+        <span class="total-label">Total a Pagar:</span>
+        <span class="total-monto" id="total-monto">S/. {{ totalVenta() | number:'1.2-2' }}</span>
+      </div>
+
+      <button
+        type="button"
+        class="btn-registrar"
+        id="btn-registrar-venta"
+        (click)="registrarVenta()"
+      >
+        Emitir Comprobante y Registrar
+      </button>
+    </div>
+
+    <!-- Panel Historial de Ventas -->
+    <div class="card panel-historial">
+      <h2>Historial de Ventas</h2>
+
+      <div class="filtros-historial">
+        <div class="campo">
+          <label for="filtro-ventas-desde">Desde</label>
+          <input
+            type="date"
+            id="filtro-ventas-desde"
+            [(ngModel)]="filtroFechaDesde"
+            (change)="alCambiarFiltroFechas()"
+          />
+        </div>
+        <div class="campo">
+          <label for="filtro-ventas-hasta">Hasta</label>
+          <input
+            type="date"
+            id="filtro-ventas-hasta"
+            [(ngModel)]="filtroFechaHasta"
+            (change)="alCambiarFiltroFechas()"
+          />
+        </div>
+      </div>
+
+      <table class="tabla-ventas" id="tabla-ventas">
+        <thead>
+          <tr>
+            <th>Comprobante</th>
+            <th>Fecha</th>
+            <th>Cliente</th>
+            <th>Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (v of ventasHistorial(); track v.id) {
+            <tr>
+              <td><strong>{{ v.numeroComprobante }}</strong></td>
+              <td>{{ v.fecha }}</td>
+              <td>{{ v.cliente }}</td>
+              <td>S/. {{ v.total | number:'1.2-2' }}</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+
+      <app-paginador
+        [pagina]="paginaVentas()"
+        [totalPaginas]="totalPaginasVentas()"
+        [totalElementos]="totalElementosVentas()"
+        [tamano]="10"
+        (cambioPagina)="onCambioPaginaVentas($event)"
+      />
+    </div>
+  </div>
+</div>
