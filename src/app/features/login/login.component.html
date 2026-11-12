@@ -1,0 +1,42 @@
+<div class="login-wrapper">
+  <div class="login-card">
+    <div class="login-logo">💊 PharmaSoft</div>
+    <h2>Iniciar Sesión</h2>
+
+    @if (sesionExpirada()) {
+      <div class="alerta-expirada" id="alerta-sesion-expirada" role="alert">
+        ⚠️ Tu sesión ha expirado o el token es inválido. Por favor, ingresa tus credenciales nuevamente.
+      </div>
+    }
+
+    @if (error()) {
+      <div class="alerta-error" role="alert">{{ error() }}</div>
+    }
+
+    <form (ngSubmit)="iniciarSesion()" class="form-login">
+      <div class="campo">
+        <label for="usuario">Usuario</label>
+        <input type="text" id="usuario" name="usuario" [(ngModel)]="usuario" required placeholder="admin o vendedor" />
+      </div>
+
+      <div class="campo">
+        <label for="password">Contraseña</label>
+        <input type="password" id="password" name="password" [(ngModel)]="password" placeholder="••••••••" />
+      </div>
+
+      <button type="submit" class="btn-submit" id="btn-login">Ingresar al Sistema</button>
+    </form>
+
+    <div class="accesos-rapidos">
+      <p>Accesos de demostración:</p>
+      <div class="botones-roles">
+        <button type="button" class="btn-rol btn-admin" id="btn-login-admin" (click)="entrarComoAdmin()">
+          👨‍💼 Administrador (con Auditoría)
+        </button>
+        <button type="button" class="btn-rol btn-vendedor" id="btn-login-vendedor" (click)="entrarComoVendedor()">
+          🧑‍⚕️ Vendedor (sin Auditoría)
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

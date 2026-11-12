@@ -1,0 +1,98 @@
+<div class="auditoria-page">
+  <div class="page-header">
+    <div>
+      <h1 id="titulo-auditoria">Bitácora de Auditoría</h1>
+      <p class="subtitulo">Registro histórico de operaciones críticas post-commit para trazabilidad y seguridad.</p>
+    </div>
+  </div>
+
+  <!-- Barra de Filtros -->
+  <section class="filtros-card">
+    <form (ngSubmit)="aplicarFiltros()" class="filtros-form">
+      <div class="filtro-item">
+        <label for="filtro-usuario">Usuario</label>
+        <input
+          type="text"
+          id="filtro-usuario"
+          name="filtroUsuario"
+          [(ngModel)]="filtroUsuario"
+          placeholder="Ej: admin, vendedor..."
+        />
+      </div>
+
+      <div class="filtro-item">
+        <label for="filtro-accion">Acción</label>
+        <select id="filtro-accion" name="filtroAccion" [(ngModel)]="filtroAccion">
+          <option value="">-- Todas las acciones --</option>
+          @for (acc of accionesDisponibles; track acc) {
+            <option [value]="acc">{{ acc }}</option>
+          }
+        </select>
+      </div>
+
+      <div class="filtro-item">
+        <label for="filtro-desde">Desde</label>
+        <input type="date" id="filtro-desde" name="filtroDesde" [(ngModel)]="filtroDesde" />
+      </div>
+
+      <div class="filtro-item">
+        <label for="filtro-hasta">Hasta</label>
+        <input type="date" id="filtro-hasta" name="filtroHasta" [(ngModel)]="filtroHasta" />
+      </div>
+
+      <div class="filtro-botones">
+        <button type="submit" class="btn-filtrar" id="btn-filtrar">Filtrar</button>
+        <button type="button" class="btn-limpiar" id="btn-limpiar" (click)="limpiarFiltros()">Limpiar</button>
+      </div>
+    </form>
+  </section>
+
+  <!-- Tabla de Auditoría -->
+  <div class="tabla-wrapper">
+    @if (cargando()) {
+      <div class="cargando-box">Cargando registros de auditoría...</div>
+    } @else if (registros().length === 0) {
+      <div class="vacio-box">No se encontraron registros de auditoría con los filtros aplicados.</div>
+    } @else {
+      <table class="tabla-auditoria" id="tabla-auditoria">
+        <thead>
+          <tr>
+            <th>Fecha / Hora</th>
+            <th>Usuario</th>
+            <th>Acción</th>
+            <th>Entidad</th>
+            <th>ID Entidad</th>
+            <th>Detalle de la Operación</th>
+            <th>IP Origen</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (item of registros(); track item.id) {
+            <tr>
+              <td class="col-fecha">{{ item.fechaHora | date:'yyyy-MM-dd HH:mm:ss' }}</td>
+              <td class="col-usuario"><strong>{{ item.usuario }}</strong></td>
+              <td>
+                <span class="badge" [ngClass]="obtenerClaseAccion(item.accion)">
+                  {{ item.accion }}
+                </span>
+              </td>
+              <td>{{ item.entidad }}</td>
+              <td class="col-id">#{{ item.entidadId }}</td>
+              <td class="col-detalle">{{ item.detalle }}</td>
+              <td class="col-ip"><code>{{ item.ip || '127.0.0.1' }}</code></td>
+            </tr>
+          }
+        </tbody>
+      </table>
+
+      <!-- Paginador Reutilizable -->
+      <app-paginador
+        [pagina]="pagina()"
+        [totalPaginas]="totalPaginas()"
+        [totalElementos]="totalElementos()"
+        [tamano]="tamano()"
+        (cambioPagina)="onCambioPagina($event)"
+      />
+    }
+  </div>
+</div>

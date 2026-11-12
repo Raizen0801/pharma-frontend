@@ -5,5 +5,12 @@
     <a routerLink="/inicio">Inicio</a>
     <a href="http://localhost:8080/swagger-ui.html" target="_blank" rel="noopener">API</a>
   </nav>
-  <span class="usuario">Invitado</span>
+  <div class="usuario-area">
+    <span class="usuario" id="usuario-actual">{{ usuario() }}</span>
+    @if (estaAutenticado()) {
+      <button type="button" class="btn-logout" (click)="cerrarSesion()">Salir</button>
+    } @else {
+      <a routerLink="/login" class="btn-login-link">Acceder</a>
+    }
+  </div>
 </header>

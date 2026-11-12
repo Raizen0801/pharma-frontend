@@ -1,0 +1,50 @@
+<div class="paginador-container">
+  <div class="paginador-info">
+    <span>Mostrando página <strong>{{ pagina() + 1 }}</strong> de <strong>{{ totalPaginas() || 1 }}</strong></span>
+    <span class="separador">•</span>
+    <span>Total: <strong>{{ totalElementos() }}</strong> registros</span>
+  </div>
+  <div class="paginador-acciones">
+    <button
+      type="button"
+      class="btn-pag"
+      id="btn-pag-primera"
+      [disabled]="pagina() === 0"
+      (click)="irAPagina(0)"
+      title="Primera página"
+    >
+      «
+    </button>
+    <button
+      type="button"
+      class="btn-pag"
+      id="btn-pag-anterior"
+      [disabled]="pagina() === 0"
+      (click)="irAPagina(pagina() - 1)"
+      title="Página anterior"
+    >
+      ‹ Anterior
+    </button>
+    <span class="pag-actual">{{ pagina() + 1 }}</span>
+    <button
+      type="button"
+      class="btn-pag"
+      id="btn-pag-siguiente"
+      [disabled]="pagina() >= totalPaginas() - 1 || totalPaginas() === 0"
+      (click)="irAPagina(pagina() + 1)"
+      title="Página siguiente"
+    >
+      Siguiente ›
+    </button>
+    <button
+      type="button"
+      class="btn-pag"
+      id="btn-pag-ultima"
+      [disabled]="pagina() >= totalPaginas() - 1 || totalPaginas() === 0"
+      (click)="irAPagina(totalPaginas() - 1)"
+      title="Última página"
+    >
+      »
+    </button>
+  </div>
+</div>
